@@ -74,7 +74,7 @@ class Industry {
     public function getCompanyIndustries($companyId){
 
         
-        $query = "SELECT i.industryId , i.name as industryName
+        $query = "SELECT i.industryId , i.name 
         FROM company c 
         INNER JOIN company_industry c_i ON c_i.companyId = c.companyId 
         INNER JOIN industry i ON i.industryId =  c_i.industryId 

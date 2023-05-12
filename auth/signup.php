@@ -24,7 +24,7 @@
     $size = $body['size']? $body['size'] :null;
     $industries = $body['industries']? $body['industries'] :[];
     
-    $image= imageUpload('image');
+    $image= null;
     echo $image;
 
 

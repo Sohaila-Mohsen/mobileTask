@@ -2,8 +2,6 @@
     include "../connect.php";
     include "../company/company.php";
     include "../location/location.php";
-    // include "../industry/industry.php";
-
 
     function endRequest($msg="",$statusCode=400){
         http_response_code($statusCode);
@@ -11,28 +9,23 @@
         die();
     }
 
-    $body = json_decode( file_get_contents('php://input'),true);
-
-    $companyId = $body['companyId']? $body['companyId'] :endRequest("companyId is requied");
-    $companyName = $body['name']? $body['name'] :endRequest("company name is requied");
-    $email = $body['email']? $body['email'] :endRequest("email is requied");
-    $password = $body['password']? $body['password'] :endRequest("password is requied");
-    $contactName = $body['contactName']? $body['contactName'] :endRequest("contactName is requied");
-    $contactPhone = $body['contactPhone']? $body['contactPhone'] :endRequest("contactPhone is requied");
-    $address = $body['address']? $body['address'] :endRequest("address is requied");
-    $locationId = $body['locationId']? $body['locationId'] :endRequest("locationId is requied");
-    $lat = $body['lat']? $body['lat'] :endRequest("lat is requied");
-    $lon = $body['lon']? $body['lon'] :endRequest("lon is requied");
-    $size = $body['size']? $body['size'] :null;
-    $industries = $body['industries']? $body['industries'] :[];
-    
+    $companyId = isset($_POST['companyId'])? $_POST['companyId'] :endRequest("companyId is requied2");
+    $companyName = isset($_POST['name'])? $_POST['name'] :endRequest("company name is requied");
+    $email = isset($_POST['email'])? $_POST['email'] :endRequest("email is requied");
+    $password = isset($_POST['password'])? $_POST['password'] :endRequest("password is requied");
+    $contactName = isset($_POST['contactName'])? $_POST['contactName'] :endRequest("contactName is requied");
+    $contactPhone = isset($_POST['contactPhone'])? $_POST['contactPhone'] :endRequest("contactPhone is requied");
+    $address = isset($_POST['address'])? $_POST['address'] :endRequest("address is requied");
+    $locationId = isset($_POST['locationId'])? $_POST['locationId'] :endRequest("locationId is requied");
+    $lat = isset($_POST['lat'])? $_POST['lat'] :endRequest("lat is requied");
+    $lon = isset($_POST['lon'])? $_POST['lon'] :endRequest("lon is requied");
+    $size = isset($_POST['size'])? $_POST['size'] :null;
+    $industries = isset($_POST['industries'])? json_decode($_POST['industries']) :[];
     $image= imageUpload('image');
-
 
     //update location
     $location = new Location($con);
     $newLocationId=$location->updateLocation($locationId,$lat,$lon);
-    echo $newLocationId;
 
     //delete previous industries
     $stmt = $con->prepare("DELETE FROM `company_industry` WHERE `company_industry`.`companyId` = ?");
@@ -44,17 +37,73 @@
     $companyId = $company->updateCompany($companyId,$companyName,$email,$password,$contactName,$contactPhone,$address,$size,$image);
     
     if($companyId != -1){
-        foreach($industries as $industry){
-            $industryObj = new Industry($con);
-            $industryId=$industryObj->getIndustryByName($industry);
-            if($industryId != -1 ){
-                $companyIndustryId=$industryObj->createCompanyIndustry($companyId,$industryId);
-                array_push($com_ind,$companyIndustryId);
+        if(count($industries) != 0){
+            foreach($industries as $industry){
+                $industryObj = new Industry($con);
+                $industryId=$industryObj->getIndustryByName($industry);
+                if($industryId != -1 ){
+                    $companyIndustryId=$industryObj->createCompanyIndustry($companyId,$industryId);
+                    array_push($com_ind,$companyIndustryId);
+                }
             }
         }
+        //echo $companyId;
         echo json_encode(array("data"=>$company->getCompany($companyId)));
     }else{
-        $location->deleteLocation($locationId);
-        http_response_code(400);
+        //$location->deleteLocation($locationId);
+        //http_response_code(400);
         echo json_encode(array("status"=>"failed to update company"));
     }
+
+
+
+
+
+
+
+
+
+     // include "../industry/industry.php";
+
+    // $email = $_POST['email'];
+    // echo $email;
+    // $image = $_POST['image'];
+    // echo gettype($image);
+    // echo $image;
+    // echo json_encode($_FILES['image']);
+    // echo json_decode($image);
+    // Get the request data
+    // $requestData = json_decode(file_get_contents('php://input'));
+    // echo json_encode($requestData);
+    // $image = $requestData['image'];
+    // echo $image;
+    // echo json_encode($image);
+
+
+    // Print the request data
+    // print_r($requestData);
+
+    // $body = json_decode( file_get_contents('php://input'),true);
+    // // $email = $body['email']? $body['email'] : "there is no email id recived";
+
+    // // http_response_code(200);
+    // // echo json_encode(array("email" =>  $email , "image" => $_FILES['image']));
+    
+
+   
+
+
+    // $companyId = $body['companyId']? $body['companyId'] :endRequest("companyId is requied2");
+    // $companyName = $body['name']? $body['name'] :endRequest("company name is requied");
+    // $email = $body['email']? $body['email'] :endRequest("email is requied");
+    // $password = $body['password']? $body['password'] :endRequest("password is requied");
+    // $contactName = $body['contactName']? $body['contactName'] :endRequest("contactName is requied");
+    // $contactPhone = $body['contactPhone']? $body['contactPhone'] :endRequest("contactPhone is requied");
+    // $address = $body['address']? $body['address'] :endRequest("address is requied");
+    // $locationId = $body['locationId']? $body['locationId'] :endRequest("locationId is requied");
+    // $lat = $body['lat']? $body['lat'] :endRequest("lat is requied");
+    // $lon = $body['lon']? $body['lon'] :endRequest("lon is requied");
+    // $size = $body['size']? $body['size'] :null;
+    // $industries = $body['industries']? $body['industries'] :[];
+    // //$image = $_FILES['image'];
+    // // $image = null;

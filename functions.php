@@ -24,8 +24,10 @@ function imageUpload($imageRequest){
         }
     
         if(empty($msgError)){
-            $imagePath = APP_ROOT."/upload/" . $imageName;
-            move_uploaded_file($imageTmp,$imagePath);
+            
+            $storagePaht = "D:/FCAI/Flutter course/180 course/tasks/authentication_app/assets/images/" . $imageName;
+            move_uploaded_file($imageTmp,$storagePaht);
+            $imagePath = "D:/FCAI/Flutter course/180 course/tasks/authentication_app/assets/images/" . $imageName;
             return $imagePath;
         }else{
             print_r("there is error in the" , $msgError);
@@ -34,4 +36,3 @@ function imageUpload($imageRequest){
         return null;
     }
 }
-

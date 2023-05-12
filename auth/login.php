@@ -2,8 +2,16 @@
     include "../connect.php";
     include "../company/company.php";
 
-    $email= filterRequest('email');
-    $password= filterRequest('password');
+    function endRequest($msg="",$statusCode=400){
+        http_response_code($statusCode);
+        echo json_encode(array("message" =>$msg));
+        die();
+    }
+
+    $body = json_decode( file_get_contents('php://input'),true);
+
+    $email = $body['email']? $body['email'] :endRequest("email is requied");
+    $password = $body['password']? $body['password'] :endRequest("password is requied");
 
     $query = "SELECT companyId  FROM company c WHERE `email` = ? AND `password`=?";
     $stmt = $con->prepare($query);

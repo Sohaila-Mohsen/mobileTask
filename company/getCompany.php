@@ -11,7 +11,7 @@
 
     $body = json_decode( file_get_contents('php://input'),true);
 
-    $companyId = $body['companyId']? $body['companyId'] :endRequest("companyId is requied");
+    $companyId = $body['companyId']? $body['companyId'] :endRequest("companyId is requied1");
     $companyObj = new Company($con);
     $company = $companyObj->getCompany($companyId);
 

@@ -14,7 +14,7 @@
             // 1) get comapany has this id and it location
             $query = "SELECT * 
                       FROM company c 
-                      INNER JOIN location l ON c.locationId =l.locationId
+                      LEFT JOIN location l ON c.locationId =l.locationId
                       WHERE c.companyId = ? ";
             $stmt = $this->con->prepare($query);
             $stmt->execute(array($companyId));
@@ -64,13 +64,13 @@
 
             $stmt = $this->con->prepare($query);
             $stmt->execute(array($companyName,$email,$password,$contactName,$contactPhone,$address,$size,$image,$companyId));
-
-            $count = $stmt->rowCount();
-            if($count >0){
-                return $companyId;
-            }else{
-                return -1;
-            }
+            return $companyId;
+            
+            // $count = $stmt->rowCount();
+            // if($count >0){
+            // }else{
+            //     return -1;
+            // }
             // 2) call create location
             // 3) call create industry
 
