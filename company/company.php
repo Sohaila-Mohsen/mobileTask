@@ -82,7 +82,7 @@
         public function updateCompanyWithoutImage($companyId,$companyName,$email,$password,$contactName,$contactPhone,$address,$size){
 
             // 1) create company
-            $query = "UPDATE `company` SET `name` = ?, `email` = ?,`password` = ?, `contactName` = ?, `contactPhone` = ?, `address` = ? ,`size` =?, WHERE `company`.`companyId` = ?";
+            $query = "UPDATE `company` SET `name` = ?, `email` = ?,`password` = ?, `contactName` = ?, `contactPhone` = ?, `address` = ? ,`size` =? WHERE `company`.`companyId` = ?";
 
             $stmt = $this->con->prepare($query);
             $stmt->execute(array($companyName,$email,$password,$contactName,$contactPhone,$address,$size,$companyId));

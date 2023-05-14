@@ -9,6 +9,22 @@
         die();
     }
 
+
+//     {
+//     "companyId":23,
+//     "locationId":"25",
+//     "name":"pharmacyy",
+//     "email":"pharmacy866@gmail.com",
+//     "password":"12345678",
+//     "contactName":"gaber",
+//     "contactPhone":"01563289654",
+//     "address":"maadi",
+//     "size":"Small",
+//     "lat":"3.666699",
+//     "lon":"3.666666",
+//     "industries":["food"]
+// }
+
     $companyId = isset($_POST['companyId'])? $_POST['companyId'] :endRequest("companyId is requied2");
     $companyName = isset($_POST['name'])? $_POST['name'] :endRequest("company name is requied");
     $email = isset($_POST['email'])? $_POST['email'] :endRequest("email is requied");
@@ -20,8 +36,12 @@
     $lat = isset($_POST['lat'])? $_POST['lat'] :endRequest("lat is requied");
     $lon = isset($_POST['lon'])? $_POST['lon'] :endRequest("lon is requied");
     $size = isset($_POST['size'])? $_POST['size'] :null;
-    $industries = isset($_POST['industries'])? json_decode($_POST['industries']) :[];
+    $industries = isset($_POST['industries'])? $_POST['industries'] :[];
     $image= imageUpload('image');
+
+    $industries = explode('[', $industries)[1];
+    $industries = explode(']', $industries)[0];
+    $industries = explode(',', $industries);
 
     //update location
     $location = new Location($con);
@@ -34,6 +54,7 @@
     $com_ind =[];
     
     $company = new Company($con);
+    
     if($image != null){
         $companyId = $company->updateCompanyWithImage($companyId,$companyName,$email,$password,$contactName,$contactPhone,$address,$size,$image);
     }else{
@@ -44,7 +65,7 @@
         if(count($industries) != 0){
             foreach($industries as $industry){
                 $industryObj = new Industry($con);
-                $industryId=$industryObj->getIndustryByName($industry);
+                $industryId=$industryObj->getIndustryByName(ltrim($industry));
                 if($industryId != -1 ){
                     $companyIndustryId=$industryObj->createCompanyIndustry($companyId,$industryId);
                     array_push($com_ind,$companyIndustryId);
@@ -63,7 +84,7 @@
 
 
 
-
+///////////////////////////////////////////////////////////////////////////////////////
 
 
 
