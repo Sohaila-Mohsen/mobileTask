@@ -34,7 +34,11 @@
     $com_ind =[];
     
     $company = new Company($con);
-    $companyId = $company->updateCompany($companyId,$companyName,$email,$password,$contactName,$contactPhone,$address,$size,$image);
+    if($image != null){
+        $companyId = $company->updateCompanyWithImage($companyId,$companyName,$email,$password,$contactName,$contactPhone,$address,$size,$image);
+    }else{
+        $companyId = $company->updateCompanyWithoutImage($companyId,$companyName,$email,$password,$contactName,$contactPhone,$address,$size);
+    }
     
     if($companyId != -1){
         if(count($industries) != 0){

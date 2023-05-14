@@ -57,7 +57,7 @@
 
             // ) return company
         }
-        public function updateCompany($companyId,$companyName,$email,$password,$contactName,$contactPhone,$address,$size,$image){
+        public function updateCompanyWithImage($companyId,$companyName,$email,$password,$contactName,$contactPhone,$address,$size,$image){
 
             // 1) create company
             $query = "UPDATE `company` SET `name` = ?, `email` = ?,`password` = ?, `contactName` = ?, `contactPhone` = ?, `address` = ? ,`size` =?, `image` =? WHERE `company`.`companyId` = ?";
@@ -77,6 +77,27 @@
             // ) return company
         }
 
+
+
+        public function updateCompanyWithoutImage($companyId,$companyName,$email,$password,$contactName,$contactPhone,$address,$size){
+
+            // 1) create company
+            $query = "UPDATE `company` SET `name` = ?, `email` = ?,`password` = ?, `contactName` = ?, `contactPhone` = ?, `address` = ? ,`size` =?, WHERE `company`.`companyId` = ?";
+
+            $stmt = $this->con->prepare($query);
+            $stmt->execute(array($companyName,$email,$password,$contactName,$contactPhone,$address,$size,$companyId));
+            return $companyId;
+            
+            // $count = $stmt->rowCount();
+            // if($count >0){
+            // }else{
+            //     return -1;
+            // }
+            // 2) call create location
+            // 3) call create industry
+
+            // ) return company
+        }
 
     }
 
