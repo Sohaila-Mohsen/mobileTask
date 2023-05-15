@@ -9,6 +9,21 @@ class Service {
         $this->con = $con;
     }
 
+    public function getServices(){
+        
+        $stmt = $this->con->prepare("SELECT * FROM  `service`");
+        $stmt->execute();
+
+        $count = $stmt->rowCount();
+        
+        if($count>0){
+            $services = $stmt->fetchAll (PDO::FETCH_ASSOC);
+            return $services; 
+        }else{
+            return [];
+        }
+    }
+
     public function getCompanyServices($companyId){
 
         
