@@ -1,7 +1,7 @@
 <?php 
 
 
-error_reporting(0);
+// error_reporting(0);
 
 function filterRequest($requestname){
     return htmlspecialchars(strip_tags($_POST[$requestname]));

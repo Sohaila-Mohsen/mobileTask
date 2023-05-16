@@ -45,6 +45,30 @@ class Service {
             return [];
         }
     }
+
+    
+    public function getCompaniesByService($serviceId){
+        
+        $query = "SELECT `c`.`companyId`
+        FROM company c 
+        WHERE c.companyId IN ( SELECT `c_s`.`companyId`
+            FROM `company_service` `c_s`
+            INNER JOIN service  ON `c_s`.`serviceId` = ? 
+            )";
+        
+        $stmt = $this->con->prepare($query);
+        $stmt->execute(array($serviceId));
+
+        $companiesIds = $stmt->fetchAll (PDO::FETCH_ASSOC);
+
+       
+        
+        if(count($companiesIds)>0){
+            return $companiesIds; 
+        }else{
+            return [];
+        }
+    }
     
     
 }
